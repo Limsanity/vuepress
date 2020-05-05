@@ -49,6 +49,41 @@ title: 'NestJS'
 
 
 
+## Pipes
+
+### Conception
+
+- annotated with `@Injectable()` and implement the `PipeTransform` interface
+- two typical use cases
+  - transformation
+  - validation
+- interpose a pipe before a method and the pipe receives the arguments destined for the method
+- pipe run inside the exceptions zone
+
+### Built-in pipes
+
+- ValidationPipe
+- ParseIntPipe
+- ParseBoolPipe
+- ParseArrayPipe
+- ParseUUIDPipe
+
+### PipeTransform Interface
+
+- Every pipe has to provide the `transform` method, and accpet two parameters:
+  - value
+    - currently processed argument
+  - metadata
+    - type: `'body' | 'query' | 'param' | 'custom'`
+      - indicate whether the argument is a body `@Body()`, query `@Query`, param `@Param()`, or custem parameter.
+    - metatype
+      - provides the metatype of the argument, e.g. `String`. The value is `undefined` if you either omit a type declaration in the route handler method signature, or use vanilla JavaScript.
+    - data
+      - The string passed to the decorator, e.g. `@Body('string')`. It's `undefined` if you leave the decorator parenthesis empty.
+- TypeScript interfaces disappear during transiplaton. Thus, if a method parameter's type is declared as an interface instead of a class, the `metatype` value will be Object.
+
+
+
 ## Authentication
 
 ### Local Strategy
@@ -66,3 +101,17 @@ title: 'NestJS'
 
 - 编写strategy逻辑，需要继承`PassportStrategy(Strategy)`，并重写`validate`方法，在module中引入strategy
 - root module中引入auth module，在controller中使用`UseGuard`实现鉴权
+
+
+
+## Validation
+
+### Built-in pipes
+
+- ValidationPipe
+  - make use of [class-validator](https://github.com/typestack/class-validator)
+- ParseIntPipe
+- ParseBoolPipe
+- ParseArrayPipe
+- ParseUUIDPipe
+
