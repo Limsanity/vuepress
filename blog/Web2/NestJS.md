@@ -46,3 +46,23 @@ title: 'NestJS'
 #### Setting roles per handler
 
 - @SetMetadata
+
+
+
+## Authentication
+
+### Local Strategy
+
+#### Install Dependencies
+
+- 对于所有的strategy都需要安装`@nestjs/passport`和`passport`包，然后是具体strategy对应的包如`passport-jwt`和`passport-local`。
+
+#### Implement Strategy
+
+- 创建module和service文件
+
+- 编写service中的逻辑，并在module中引入service
+- 创建strategy文件
+
+- 编写strategy逻辑，需要继承`PassportStrategy(Strategy)`，并重写`validate`方法，在module中引入strategy
+- root module中引入auth module，在controller中使用`UseGuard`实现鉴权
