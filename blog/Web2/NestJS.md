@@ -21,7 +21,7 @@ title: 'NestJS'
 - Execution Context
   - inherits from `ArgumentsHost`（see `exception filters`）
 
-### Example
+### Use case
 
 #### Role-base authentication
 
@@ -81,6 +81,10 @@ title: 'NestJS'
     - data
       - The string passed to the decorator, e.g. `@Body('string')`. It's `undefined` if you leave the decorator parenthesis empty.
 - TypeScript interfaces disappear during transiplaton. Thus, if a method parameter's type is declared as an interface instead of a class, the `metatype` value will be Object.
+
+### Use case
+
+
 
 
 
