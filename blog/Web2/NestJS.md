@@ -151,3 +151,17 @@ title: 'NestJS'
 - ParseArrayPipe
 - ParseUUIDPipe
 
+### Overview
+
+#### Using the built-in ValidationPipe
+
+- all `class-validator` options are available
+- use concrete class in DTO instead of generic or interfaces in typescript
+- `app.useGlobalPipes(new ValidationPipe())` for auto-validation
+- disable detailed errors by passing option to `ValidationPipe` constructor
+- set `whitelist: true` for filtering out properties which without any decorator in validation class, aka DTO
+- set `forbidNonWhitelisted: true` and `whitelist: true` for denying processing request when no-whitelisted properties present
+- set `transform: true` for transforming the plain JS Object comming from network to their DTO class, with the option enabled, `ValidationPipe` will also perform conversion of primitive types e.g. specify the `id` type as number in the method signature.
+- alternatively, with auto-transformation disabled, you can use `parseIntPiep` etc for explicit conversion
+- use `parseArrayPipe` and pass DTO class for validating array type. In addition, the `ParseArrayPipe` may come in handy when parsing query parameters because you can pass `seperator` option
+- works the same for websockets and microservices
