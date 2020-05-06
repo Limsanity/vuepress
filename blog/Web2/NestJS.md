@@ -84,7 +84,39 @@ title: 'NestJS'
 
 ### Use case
 
+#### Validation
 
+##### Object schema validation
+
+- install `@hapi/joi` for dependency and `@types/hapi__joi` for dev-dependency
+- create a pipe file e.g. `joi-validation.pipe.ts`
+  - implements `PipeTransform` 
+  - constructor receive an `ObjectSchema` type argument
+  - override transform method
+    - use joi validate method for validating value
+    - return value or `BadRequestException` instance
+- create a schema file e.g. `createCatSchema` 
+  - `Joi.object` for validating
+- Binding pipes in Controller file
+  - method-scoped, controller-scoped, global-scoped, param-scoped
+
+##### Class validator
+
+- install `class-validator` and `class-transformer` for dependencies
+- use `class-validator` insde dto file e.g. `create-cat.dto.ts`
+- create a pipe file e.g. `validation.pipe.ts`
+  - implements `PipeTransform`
+  - override transform method
+    - essure value is a custom type by validating ` metatype`
+    - use `plainToClass` method  (from `class-transformer`) for getting an object
+    - use `validator` method (from `class-validator`) for validating an object
+
+#### Transformation
+
+- create pipe file e.g. `parse-int.pipe.ts`
+- implements `PipeTransform`
+- override `transform` method
+  - return transformed value
 
 
 
