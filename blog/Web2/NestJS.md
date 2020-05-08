@@ -7,7 +7,7 @@ title: 'NestJS'
 
 ## Guard
 
-### Conception
+### Concept
 
 - CanActivate、canActivate
   - implements CanActivate
@@ -51,7 +51,7 @@ title: 'NestJS'
 
 ## Pipes
 
-### Conception
+### Concept
 
 - annotated with `@Injectable()` and implement the `PipeTransform` interface
 - two typical use cases
@@ -117,6 +117,36 @@ title: 'NestJS'
 - implements `PipeTransform`
 - override `transform` method
   - return transformed value
+
+
+
+## Interceptors
+
+### Concept
+
+- annotated with `Injectable()`, implement the `NestInterceptor` inerface
+- bind extra logic before / after method execution
+- transform the result returned from a function
+- transform the exception thrown from a function
+- extend the basic function behavior
+- compeltely override a function depending on specific conditions e.g. caching purposes
+- Aspect Oriented Programming
+
+### Basic
+
+- implements the `intercept()` method, which take two arguments.
+  - one is the `ExecutionContext` instance
+  - the second is a `CallHandler`
+
+### Execution Context
+
+- extend `ArgumentsHost`
+- see detail in `ExecutionContext`
+
+### Call handler
+
+- implements `handle()` method, which use to invoke the route handler method
+- `handle()` returns an `Observable`， so we can use RxJS operator like `map`、`tap` etc
 
 
 
