@@ -150,6 +150,35 @@ title: 'NestJS'
 
 
 
+## Custom providers
+
+- DI is an IOC technique, where you delegate instantiation of dependencies to the IoC container, e.g. NestJS runtime system.
+- three steps
+  - `@Injectable`
+  - annotate constuctor arguments
+  - register provider with the Nest IoC container
+- `providers` property takes an array of providers
+  - provider item has `provide` and `useClass` and `useValue`  property
+    - `provide` is a token
+    - `useClass` indicate an working  instance
+    - `useValue` is useful for injecting a constant value
+- some use cases to use custom providers
+  - want to create a custom instance instead of having Nest instantiate a class
+  - want to re-use an exsting class in a second dependency
+  - want to override a class with a mock version for testing
+- `useValue` is useful for injecting a constant value, which should "look like" the specific class, that means same methods and so on.
+- provide token can be a string as well as symbol instead of class.
+  - If we need to inject a Non-Class-Based provider, we have to use `@Inject()` decorator.
+- `useClass` syntax allows you to dynamically determin a class that a token should revole to, for example, different config provider in different environment.
+- `useFactory` syntax allows for createing provider dynamically. A more complex factory can itself inject other providers it needs to compute its result, which has a pair of related mechanisms:
+  - The factory function accpet arguments
+  - `inject` property accpet array of providers that Nest will resolve and pass to fatory function, that means they should be the same order.
+- `useExisting` syntax allows you to create aliases for exsting providers. Differenct provide token resolve the same instance with `SINGLETON` case.
+- Non-service based providers.
+- we can export a custom provider by provide token or provider object.
+
+
+
 ## Authentication
 
 ### Local Strategy
