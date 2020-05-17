@@ -3210,3 +3210,106 @@ let x = new myLargeModule.Dog();
 - 顶级声明为`export namespace Foo { ... }`（移除`Foo`，将其中内容移动至顶级声明中）
 - 多个文件在顶级声明中包含相同的`export namespace Foo { ... }`。
 
+
+
+## Module Resolution
+
+### Module Resolution Strategies
+
+#### Classic
+
+```ts
+import { b } from './moduleB'
+```
+
+would result in the following lookups:
+
+1. `/root/src/folder/moduleB.ts`
+2. `/root/src/folder/moduleB.d.ts`
+
+```ts
+import { b } from 'moduleB'
+```
+
+would result in the following lookups:
+
+1. `/root/src/folder/moduleB.ts`
+2. `/root/src/folder/moduleB.d.ts`
+3. `/root/src/moduleB.ts`
+4. `/root/src/moduleB.d.ts`
+5. `/root/moduleB.ts`
+6. `/root/moduleB.d.ts`
+7. `/moduleB.ts`
+8. `/moduleB.d.ts`
+
+#### Node
+
+TypeScript will use field in `package.json` named `types` to mirror the purpose of `main`.
+
+Consider an import statement like `import { b } from './moduleB'` in file located at `/root/src/moduleA.ts`, it would results in the following lookups:
+
+1. `/root/src/moduleB.ts`
+2. `/root/src/moduleB.tsx`
+3. `/root/src/moduleB.d.ts`
+4. `/root/src/package.json`
+5. `/root/src/moduleB/index.ts`
+6. `/root/src/moduleB/index.tsx`
+7. `/root/src/moduleB/index.d.ts`
+
+Similaly, a non-relative import will resolve the module in `node_modules`.
+
+### Additional module resolution flags
+
+#### Base URL
+
+All module imports with non-relative names are assumed to be relative to `baseUrl`.
+
+Value of baseUrl is determined as either:
+
+- command line argument
+- property in `tsconfig.json`
+
+#### Path mapping
+
+Sometimes, an import to a module `jquery` would be translated at runtime to `node_modules/jquery/dist/jquery.slim.min.js`. TypeScript compiler supports the declaration of such mappings using `paths` property in `tsconfig.json`.
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".", // This must be specified if "paths" is.
+    "paths": {
+      "jquery": ["node_modules/jquery/dist/jquery"] // This mapping is relative to "baseUrl"
+    }
+  }
+}
+```
+
+Notice that `paths` are resolved relative to `baseUrl`. When setting `baseUrl` to `./src`, then jquery should be mapped to `../node_modules/jquery/dist/jquery`.
+
+Some sophisticated use case in handbook. [path mapping](https://www.typescriptlang.org/docs/handbook/module-resolution.html#path-mapping).
+
+#### Virtual Directories with rootDirs
+
+### Tracing module resolution
+
+Enabling the compiler module resolution tracing using `--traceResolution` provides insight int what happened during the module resolution process, which make easier to diagnose why a module is not resolved.
+
+### Using --noResolve
+
+The `--noResolve` compiler options instructs the compiler not to add any files to the compilation that were not passed on the command line.
+
+```ts
+tsc app.ts moduleA.ts --noResolve
+
+import * as A from "moduleA"; // OK, 'moduleA' passed on the command-line
+import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
+```
+
+### Common Question
+
+#### why does a module in the exlcude list still get picked up by the compiler
+
+`exclude` will tell TypeScript not to pick up some files to compile, however if the compiler identified a file as a target of a module import, it will be included.
+
+[tsconfig.json的行为]([https://jkchao.github.io/typescript-book-chinese/faqs/tsconfig-behavior.html#tsconfig-json-%E7%9A%84%E8%A1%8C%E4%B8%BA](https://jkchao.github.io/typescript-book-chinese/faqs/tsconfig-behavior.html#tsconfig-json-的行为))
+
