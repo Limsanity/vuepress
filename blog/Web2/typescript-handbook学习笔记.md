@@ -3313,3 +3313,33 @@ import * as B from "moduleB"; // Error TS2307: Cannot find module 'moduleB'.
 
 [tsconfig.json的行为]([https://jkchao.github.io/typescript-book-chinese/faqs/tsconfig-behavior.html#tsconfig-json-%E7%9A%84%E8%A1%8C%E4%B8%BA](https://jkchao.github.io/typescript-book-chinese/faqs/tsconfig-behavior.html#tsconfig-json-的行为))
 
+
+
+## Namespaces
+
+TODO
+
+
+
+## Namespaces and Modules
+
+### Using Modules
+
+Modules can contain both code and declarations.
+
+We recommended modules over namespaces in modern code.
+
+### Using Namespaces
+
+Unlike modules, they can span multiple files, and can be concatenated using `--outFile`.
+
+### Pitfalls of Namespaces and Modules
+
+A common mistake is to try to use the `/// <refernce ... />` syntax to refer to a module file, rather than using `import` statement.
+
+Because the consumer of a module decides what name to assign it, there's no need to proactively wrap up the exported symbols in a namespace.
+
+
+
+## Symbol
+
