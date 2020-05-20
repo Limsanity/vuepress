@@ -3343,3 +3343,93 @@ Because the consumer of a module decides what name to assign it, there's no need
 
 ## Symbol
 
+### Introduction
+
+`symbol` is a primitive data type.
+
+`symbol` values are created by calling the `Symbol` constructor.
+
+```ts
+let sym = Symbol("key");
+```
+
+`symbol`  is immutable and unique.
+
+```ts
+let sym2 = Symbol("key");
+let sym3 = Symbol("key");
+
+sym2 === sym3; // false
+```
+
+`symbol` can be used as keys for object properties.
+
+```ts
+const sym = Symbol();
+
+let obj = {
+  [sym]: "value"
+};
+
+console.log(obj[sym]); // "value"
+```
+
+`symbol` can also be combined with computed property declarations to declare object properties and class members.
+
+```ts
+const getClassNameSymbol = Symbol();
+
+class C {
+  [getClassNameSymbol]() {
+    return "C";
+  }
+}
+
+let c = new C();
+let className = c[getClassNameSymbol](); // "C"
+```
+
+### Well-known Built-in Symbols
+
+#### Symbol.hasInstance
+
+Called by semantics of the instanceof operator.
+
+#### Symbol.isConcatSpreadable
+
+#### Symbol.iterator
+
+Called by the semantics of the for-of statement.
+
+#### Symbol.match
+
+Called by the `String.prototype.match` method.
+
+#### Symbol.replace
+
+Called by the `String.prototype.replace` method.
+
+#### Symbol.search
+
+Called by the `String.prototype.search` method.
+
+#### Symbol.species
+
+#### Symbol.split
+
+Called by `String.prototype.split` method.
+
+#### Symbol.toPrimitive
+
+Called by `ToPrimitive` abstract operation.
+
+#### Symbol.toStringTag
+
+Called by the built-in method `Object.prototype.toString`.
+
+#### Symbol.unscopables
+
+
+
+## Triple-Slash Directives
+
