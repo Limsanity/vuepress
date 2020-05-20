@@ -25,7 +25,10 @@ logName({ name: 'cow', diet: 'vegan, but has milk of own species' }); // Error
 
 上述例子中，当传入logName的参数是一个变量并且该变量存在一个额外property时并不会报错，而传入的一个对象字面量存在一个额外的property时会报错。
 
-这是因为根据上下文来推断变量对象时，widened类型将会被使用，fresh object literal types失去freshness的情况包括fresh数据类型被widened和类型断言。
+这是因为根据上下文来推断变量对象时，widened类型将会被使用，fresh object literal types失去freshness的情况包括：
+
+- fresh数据类型被widened
+- 类型断言
 
 一个类型的Widened形式就是将原始数据中的null或者undefined的数据类型由Any类型替换。
 
