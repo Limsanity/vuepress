@@ -47,3 +47,6 @@ var d = [ null, undefined ];  // var d: any[]
 
 [reading](https://medium.com/@michalskoczylas/covariance-contravariance-and-a-little-bit-of-typescript-2e61f41f6f68)
 
+判断两个变量是否兼容时，考虑subtypes和supertypes的关系。
+
+判断两个函数是否兼容时，考虑函数的作用范围。例如函数A接收一个supertypes为参数，函数B接收一个subtypes为参数，通常subtypes会拥有更多的属性，也意味着通常函数B可能更为复杂，并不适用于supertypes，因此函数A可以赋值于函数B，相反则不行。
