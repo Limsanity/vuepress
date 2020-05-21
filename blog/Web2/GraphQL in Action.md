@@ -58,3 +58,43 @@ In a pure REST API a client cannot specify which fields to select for a record i
 
 One other big problem with REST APIs is versioning. If you need to support multiple versions that usually means new endpoints. This leads to more problem while using and maintaing these endpoints and it might be the cause of code duplication on the server.
 
+Caching a REST API response is a lot easier than caching a GraphQL API response. 
+
+Optimizing the code for a REST endpoint is potentially a lot easier than optimizing the code for a generic single endpoint.
+
+#### The GraphQL Way
+
+The concepts and design decisions behind GraphQL:
+
+1. The Typed Graph Schema
+2. The Declarative Language
+3. The Single Endpoint and the Client Language
+   - Having clients asking for exactly what they need enables backend developers to have more useful analytics of what data is being used and what parts of the data is in higher demand. This is very useful data, which can be used to scale and optimize the data services based on usage patterns.
+4. The Simple Versioning
+   - This is especially important for mobile clients because you cannot control the version of the API they are using.
+
+#### REST APIs and GraphQL APIs in action
+
+### GraphQL Problems
+
+#### Security
+
+One important threat that GraphQL makes easier is resource exhaustion attacks (AKA Denial of Service attacks). It is very simple to query for deep nested relationships or use field aliases to ask for the same field many times.
+
+You can implement cost analysis on the query in advance and enforce some kind of limits on the amount of data one can consume. You can also implement a time-out to kill requests that take too long to resolve. Also, since a GraphQL service is just one layer in any application stack, you can handle the rate limits enforcement at a lower level under GraphQL.
+
+Authentication and authorization are other concerns that you need to think about when working with GraphQL.
+
+#### Caching and Optimizing
+
+With GraphQL, you can adopt a similar basic approach and use the query text as a key to cache its response. But this approach is limited, not very efficient, and can cause problems with data consistency. The results of multiple GraphQL queries can easily overlap and this basic caching approach would not account for the overlap.
+
+There is a brilliant solution to this problem. A Graph Query means a *Graph Cache*. If you normalize a GraphQL query response into a flat collection of records and give each record a global unique ID, you can cache those records instead of caching the full responses.
+
+One of the other most "famous" problems that you would encounter when working with GraphQL is the problem that is commonly referred to as N+1 SQL queries. 
+
+Luckily, Facebook is pioneering one possible solution to both the caching problem and the data-loading-optimization problem. It’s called DataLoader. DataLoader uses a combination of batching and caching to accomplish that.
+
+#### Learning Curve
+
+A developer writing a GraphQL-based frontend application will have to learn the syntax of the GraphQL language.  A developer implementing a GraphQL backend service will have to learn a lot more than just the language. 
