@@ -43,3 +43,7 @@ var d = [ null, undefined ];  // var d: any[]
 
 [TypeScript类型兼容](https://www.softwhy.com/article-10195-1.html)
 
+## Covariance and Contravariance
+
+[reading](https://medium.com/@michalskoczylas/covariance-contravariance-and-a-little-bit-of-typescript-2e61f41f6f68)
+
