@@ -3433,3 +3433,58 @@ Called by the built-in method `Object.prototype.toString`.
 
 ## Triple-Slash Directives
 
+Triple-slash directives are **only** valid at the top of their containing file.
+
+### /// \<reference path="..." /\>
+
+Triple-slash references instruct the compiler to include additional files in the compilation process.
+
+The process starts with a set of root files, these are the file names specified on the command-line or in the `"files"` list in the `tsconfig.json` file. Before a file is added to the list, all triple-slash references in it are processed, and their tartgets included. Triple-slash references are resolved in a depth first manner.
+
+A triple-slash reference path is resolved relative to the containing file, if unrooted.
+
+If the compiler flag `--noResolve` is specified, triple-slash referenes are ignored.
+
+### /// \<reference types="..." /\>
+
+For example, including `/// \<reference types="node" />` in a declaration file declares that this file uses names declared in `@types/node/index.d.ts`; and thus, this package needs to be included in the compilation along with the declaration file.
+
+For declaring a dependency on an `@types` package in a `.ts` file, use `--types` on the command line or in your `tsconfig.json` instead.
+
+### /// \<reference lib="..." /\>
+
+This directive allows a file to explicitly include an existing built-in lib file.
+
+Built-in lib files are referenced in the same fashion as the `"lib"` compiler option in tsconfig.json (e.g. use `lib="es2015"` and not `lib="lib.es2015.d.ts"`, etc).
+
+### /// \<reference no-default-lib="true" /\>
+
+This directive instructs the compiler to not include the default library (i.e. `lib.d.ts`) in the compilation. The impact here is similar to passing `--noLib` on the command line.
+
+Also note that when passing `--skipDefaultLibCheck`, the compiler will only skip checking files with `/// \<reference no-default-lib="true" \>`.
+
+### /// \<amd-module /\>
+
+By default AMD modules are generated anonymous. This can lead to problems when other tools are used to process the resulting modules, such as bundlers.
+
+The `amd-module` directive allows passing an optional module name to the compiler.
+
+```ts
+/// <amd-module name="NamedModule" />
+export class C {}
+```
+
+Will result in assigning the name `NamedModule` to the module as part of calling the AMD `define`:
+
+```ts
+define("NamedModule", ["require", "exports"], function(require, exports) {
+  var C = (function() {
+    function C() {}
+    return C;
+  })();
+  exports.C = C;
+});
+```
+
+## Type Compatibility
+
