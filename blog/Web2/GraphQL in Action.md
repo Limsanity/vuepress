@@ -38,3 +38,23 @@ title: 'GraphQL in Action'
 
 ### Why GraphQL
 
+If you ask me to answer the "Why GraphQL" question with just a single word, that word would be : **Standards**.
+
+GraphQL provides standards and structures to implement API features in maintainable and scalable ways whil the other alternatives lack such standards.
+
+GraphQL documentation is built-in and it's first class.
+
+It basically decouples clients from servers and allows both of them to evelve and scale independently. This enable much faster iteration in both frontend and backend products.
+
+With GraphQL, you can basically shift this multi-request complexity to the backend and have your GraphQL runtime deal with it.
+
+It improves frontend DX. There is a tight relationship between what data is needed by a UI and the way a developer can express a description of that data need in GraphQL.
+
+#### What about REST APIs?
+
+The biggest "relevant" problem with REST APIs here is the clients' need to communicate with multiple data API endpoints. Another big problem is, especially for mobile applications, mobile devices usually have processing, memory, and network constraints.
+
+In a pure REST API a client cannot specify which fields to select for a record in that resource, which is also known as **over-fetching**.
+
+One other big problem with REST APIs is versioning. If you need to support multiple versions that usually means new endpoints. This leads to more problem while using and maintaing these endpoints and it might be the cause of code duplication on the server.
+
