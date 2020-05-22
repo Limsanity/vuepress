@@ -3490,3 +3490,103 @@ define("NamedModule", ["require", "exports"], function(require, exports) {
 
 ### Introduction
 
+Type compatibility in TypeScript is based on structural subtyping. Structural typing is a way of relating types based soley on their members.
+
+### A Note on Soundess
+
+TypeScript’s type system allows certain operations that can’t be known at compile-time to be safe. When a type system has this property, it is said to not be “sound”.
+
+### Starting out
+
+The basic rule for TypeScript’s structural type system is that `x` is compatible with `y` if `y` has at least the same members as `x`.
+
+### Comparing two functions
+
+```ts
+let x = (a: number) => 0;
+let y = (b: number, s: string) => 0;
+
+y = x; // OK
+x = y; // Error
+```
+
+To check if `x` is assignable to `y`, we first look at the parameter list. Each parameter in `x` must have a corresponding parameter in `y` with a compatible type.
+
+You may be wondering why we allow ‘discarding’ parameters like in the example `y = x`. The reason for this assignment to be allowed is that ignoring extra function parameters is actually quite common in JavaScript. For example, `Array#forEach` provides three parameters to the callback function: the array element, its index, and the containing array. Nevertheless, it’s very useful to provide a callback that only uses the first parameter.
+
+Now let’s look at how return types are treated, using two functions that differ only by their return type:
+
+```ts
+let x = () => ({ name: "Alice" });
+let y = () => ({ name: "Alice", location: "Seattle" });
+
+x = y; // OK
+y = x; // Error, because x() lacks a location property
+```
+
+The type system enforces that the source function’s return type be a subtype of the target type’s return type.
+
+### Function Parameter Bivaraince
+
+When comparing the types of function parameters, assignment succeeds if either the source parameter is assignable to the target parameter, or vice versa. 
+
+You can have TypeScript raise errors when this happens via the compiler flag `strictFunctionTypes`.
+
+### Optional Parameters and Rest Parameters
+
+When comparing functions for compatibility, optional and required parameters are interchangeable. 
+
+### Functions with overloads
+
+When a function has overloads, each overload in the source type must be matched by a compatible signature on the target type. This ensures that the target function can be called in all the same situations as the source function.
+
+### Enums
+
+Enums are compatible with numbers, and numbers are compatible with enums. Enum values from different enum types are considered incompatible.
+
+### Classes
+
+Classes work similarly to object literal types and interfaces with one exception: they have both a static and an instance type. When comparing two objects of a class type, only members of the instance are compared. Static members and constructors do not affect compatibility.
+
+### Private and protected members in classes
+
+Private and protected members in a class affect their compatibility. When an instance of a class is checked for compatibility, if the target type contains a private member, then the source type must also contain a private member that originated from the same class. Likewise, the same applies for an instance with a protected member. This allows a class to be assignment compatible with its super class, but *not* with classes from a different inheritance hierarchy which otherwise have the same shape.
+
+### Generics
+
+Because TypeScript is a structural type system, type parameters only affect the resulting type when consumed as part of the type of a member. For example,
+
+```ts
+interface Empty<T> {}
+let x: Empty<number>;
+let y: Empty<string>;
+
+x = y; // OK, because y matches structure of x
+```
+
+In the above, `x` and `y` are compatible because their structures do not use the type argument in a differentiating way. Changing this example by adding a member to `Empty` shows how this works:
+
+```ts
+interface NotEmpty<T> {
+  data: T;
+}
+let x: NotEmpty<number>;
+let y: NotEmpty<string>;
+
+x = y; // Error, because x and y are not compatible
+```
+
+For generic types that do not have their type arguments specified, compatibility is checked by specifying `any` in place of all unspecified type arguments. For example:
+
+```ts
+let identity = function<T>(x: T): T {
+  // ...
+};
+
+let reverse = function<U>(y: U): U {
+  // ...
+};
+
+identity = reverse; // OK, because (x: any) => any matches (y: any) => any
+```
+
