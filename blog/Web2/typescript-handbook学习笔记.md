@@ -3590,3 +3590,45 @@ let reverse = function<U>(y: U): U {
 identity = reverse; // OK, because (x: any) => any matches (y: any) => any
 ```
 
+
+
+## Type Inference
+
+### Best common type
+
+Because the best common type has to be chosen from the provided candidate types, there are some cases where types share a common structure, but no one type is the super type of all candidate types. For example:
+
+```ts
+let zoo = [new Rhino(), new Elephant(), new Snake()];
+```
+
+Ideally, we may want `zoo` to be inferred as an `Animal[]`, but because there is no object that is strictly of type `Animal` in the array, we make no inference about the array element type. To correct this, instead explicitly provide the type when no one type is a super type of all other candidates:
+
+```ts
+let zoo: Animal[] = [new Rhino(), new Elephant(), new Snake()];
+```
+
+When no best common type is found, the resulting inference is the union array type, `(Rhino | Elephant | Snake)[]`.
+
+### Contextual Typing
+
+Type inference also works in “the other direction” in some cases in TypeScript. This is known as “contextual typing”. Contextual typing occurs when the type of an expression is implied by its location. For example:
+
+```ts
+window.onmousedown = function (mouseEvent) {
+  console.log(mouseEvent.button); //<- OK
+  console.log(mouseEvent.kangaroo); //<- Error!
+};
+```
+
+Here, the TypeScript type checker used the type of the `Window.onmousedown` function to infer the type of the function expression on the right hand side of the assignment. When it did so, it was able to infer the [type](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) of the `mouseEvent` parameter, which does contain a `button` property, but not a `kangaroo` property.
+
+The contextual type also acts as a candidate type in best common type. For example:
+
+```ts
+function createZoo(): Animal[] {
+  return [new Rhino(), new Elephant(), new Snake()];
+}
+```
+
+In this example, best common type has a set of four candidates: `Animal`, `Rhino`, `Elephant`, and `Snake`. Of these, `Animal` can be chosen by the best common type algorithm.
