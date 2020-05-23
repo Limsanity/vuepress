@@ -98,3 +98,41 @@ Luckily, Facebook is pioneering one possible solution to both the caching proble
 #### Learning Curve
 
 A developer writing a GraphQL-based frontend application will have to learn the syntax of the GraphQL language.  A developer implementing a GraphQL backend service will have to learn a lot more than just the language. 
+
+
+
+## Exploring GraphQL APIs
+
+This chapter covers:
+
+- Using GraphQL's in-browser IDE to test GraphQL requests
+- Exploring the fundamentals of sending GraphQL data requests
+- Exploring read and write example operations from the GitHub GraphQL API
+- Exploring GraphQL's introspective features
+- Exploring auto-generated GraphQL APIs
+
+### The GraphiQL Editor
+
+GraphiQL can help you improve these requests, validate your improvements, and debug any of the requeststhat are running into problems.
+
+### The Basics of the GraphQL Language
+
+A GraphQL request is a tree of **fields**.
+
+#### Requests
+
+The source text of a GraphQL request is often referred to as a **document**.
+
+A GraphQL request might also contain an object to represent values of variables that might be used in the request document text. The request might also include meta information about the operations. For example, if the request document contains more than one operation, a GraphQL request must include information about which operation to execute. If the request document contains only one operation, the GraphQL server will just execute that.
+
+There are three types of operations that can be used in GraphQL:
+
+- Query operations that represent a read-only fetch
+- Mutation operations that reprpesent a write followed by a fetch
+- Subscription operations that repesent a request for real-time data updates
+
+#### Fields
+
+A field in GraphQL describes on discrete piece of information that you can retrieve about an object. It could describe a scalar value, an object, a list of objects.
+
+You can also cusomize a GraphQL schema to support more scalar values with certain formats.
