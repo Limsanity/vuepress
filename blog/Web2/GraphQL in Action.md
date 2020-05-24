@@ -136,3 +136,35 @@ There are three types of operations that can be used in GraphQL:
 A field in GraphQL describes on discrete piece of information that you can retrieve about an object. It could describe a scalar value, an object, a list of objects.
 
 You can also cusomize a GraphQL schema to support more scalar values with certain formats.
+
+### Examples from the GitHub API
+
+#### Introspective Queries
+
+
+
+## Customizing and Organizing GraphQL Operations
+
+This chapter covers:
+
+- Using arguments to customize what a field in a GraphQL request returns
+- Using aliases to customize the property namesin a response object
+- Using directives to describe alternate runtime executions
+- Using fragments to reduce any duplicated text in a GraphQL document
+- Composing queries and separating data requirement responsibilities
+- Using inline fragments with interfaces and unions
+
+### Customizing Fields with Arguments
+
+#### Identifying a single record to return
+
+```
+query UserInfo {
+  user(email: "jane@doe.name") {
+  	firstName
+  	lastName
+  	userName
+  }
+}
+```
+
