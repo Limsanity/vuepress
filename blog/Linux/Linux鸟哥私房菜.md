@@ -70,3 +70,112 @@ echo ${myname} # or echo $myname
 - 若该变量需要在其他子程序执行，则需要用export来使其变成环境变量。
 - 通常大写变量为系统默认变量，小写变量为自行设置的变量。
 - 取消变量的方法为unset。`unset myname`。
+
+#### 环境变量的功能
+
+- 用`env`查看环境变量
+- 用`set`查看所有变量
+- `?`是上一个执行命令的返回值
+- `PS1`是提示字符的设置
+
+#### 影响显示结果的语系变量
+
+#### 变量的有效范围
+
+#### 变量键盘读取、数组与声明：read、array、declare
+
+- read
+
+```bash
+read [-pt] variable
+
+-p: 后面可以接提示字符
+-t: 后面可以接等待的秒数
+
+read -p "Please keyin your name: " -t 30 name # example
+```
+
+- declare, typeset
+
+```bash
+declare [-aixr] variable
+-a: 将变量定义为数组类型
+-i: 将变量定义为整数类型
+-x: 将变量变成环境变量
+-r: 将变量变为readonly类型，并且不能被unset
+
+declare -i sum=100+300+50
+echo ${sum} # 450
+
+declare +x sum # 使用+号可以取消操作
+
+declare -a var
+var[1]=lim
+echo $var[1] # lim
+```
+
+#### 与文件系统及程序的限制关系：ulimit
+
+```bash
+ulimit [-SHacdfltu] [配额]
+-f: 此shell可以建立的最大文件容量，单位为KB
+
+ulimit -f 10240 # 只能建立10MB以下的文件
+```
+
+#### 变量内容的删除、取代与替换
+
+- `#`：符合替换文字的最短的那一个
+- `##`：符合替换文字的最长的那一个
+- `%`：从后往前替换最短的一个
+- `%%`：从后往前替换最长的一个
+- `/` ：替换第一个字符串
+- `//`：替换所有字符串
+
+```bash
+$ path=${PATH}
+$ ehco ${path}
+/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dmtsai/.local/bin:/home/dmtsai/bin
+
+$ echo ${path#/*local/bin:}
+/usr/bin:/usr/local/sbin:/usr/sbin:/home/dmtsai/.local/bin:/home/dmtsai/bin
+
+$ echo ${path##/*}
+/home/dmtsai/bin
+
+$ echo ${path%:*bin}
+/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/dmtsai/.local/bin
+
+$ echo ${path%%:*bin}
+/usr/local/bin
+
+$ echo ${path/sbin/SBIN}
+/usr/local/bin:/usr/bin:/usr/local/SBIN:/usr/sbin:/home/dmtsai/.local/bin:/home/dmtsai/bin
+
+$ echo ${path//sbin/SBIN}
+/usr/local/bin:/usr/bin:/usr/local/SBIN:/usr/SBIN:/home/dmtsai/.local/bin:/home/dmtsai/bin
+```
+
+- 使用`-`测试变量是否存在
+- 使用`:-`设置不存在或者空变量
+- `+`与`-`相反
+- `:+`与`:-`相反
+- 还有`=`、`:=`、`?`、`:?`
+- `=`会影响旧变量的内容
+- 当旧变量不存在时`?`会报错
+
+```bash
+$ echo ${username}
+     # 出现空白，变量可能为空或者不存在
+$ username=${username-root}
+root # 因为没有设置username，所以主动给予内容root
+$ username="lim"
+$ username=${username-root}
+lim  # 因为设置了username，所以不会替换
+$ username=""
+$ username=${username:-root}
+root # :-会替换空字符变量
+```
+
+### 命令别名与历史命令
+
