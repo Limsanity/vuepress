@@ -168,3 +168,76 @@ query UserInfo {
 }
 ```
 
+#### Limiting the number of records returned by a list field
+
+```
+query First10Repos {
+  organization(login: "facebook") {
+    name
+    description
+    websiteUrl
+    repositories(first: 10) {
+      nodes {
+        name
+      }
+    }
+  }
+}
+```
+
+#### Ordering records returned by a list field
+
+```
+query orgReposByName {
+  organization(login: "facebook") {
+    repositories(first:10, orderBy:{field: NAME, direction: ASC}) {
+      nodes {
+        name
+      }
+    }
+  }
+}
+```
+
+#### Paginating through a list of records
+
+```
+query OrgRepoConnectionExample {
+  organization(login: "facebook") {
+    repositories(first:10, orderBy:{field: STARGAZERS, direction: DESC}) {
+      edges {
+        cursor
+        node {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+```
+query OrgReposMetaInfoExample {
+  organization(login: "facebook") {
+    repositories(
+      first: 10,
+      after: "Y3Vyc29yOnYyOpLNOE7OAeErrQ==",
+      orderBy: {field: STARGAZERS, direction: DESC}
+    ) {
+      totalCount
+      pageInfo {
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+#### Searching and filtering
+
