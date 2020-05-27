@@ -14,3 +14,16 @@ title: 'NestJS Question'
 
 cookie签名需要一个secret，express中cookieOptions设置`signed: true`时，会读取`request.secret`进行签名，`cookie-parser`中间件负责设置`request.secret`。
 
+
+
+## 关于bcrypt中的Timing Attack
+
+Timing Attack即时序攻击，例如密码毕竟时，通过返回时间长短得到密码位数错误信息。
+
+bcrypt模块是否能够防范Timing Attack取决于compare方法的实现，而[node bcrypt](https://www.npmjs.com/package/bcrypt)该模块实现了时序安全的比较方法[CompareStrings](https://github.com/kelektiv/node.bcrypt.js/blob/master/src/bcrypt_node.cc#L247)。
+
+参考：
+
+- [Is bcrypt.compare vulnerable to timing attack](https://stackoverflow.com/questions/35620979/is-bcrypt-compare-vulnerable-to-timing-attack)
+- [A not on timing attacks](https://www.npmjs.com/package/bcrypt#a-note-on-timing-attacks)
+
