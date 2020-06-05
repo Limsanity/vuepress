@@ -26,6 +26,7 @@ module.exports = {
 					{ text: 'Linux', link: '/Linux/' },
 					{ text: 'Nginx', link: '/Nginx/' },
 					{ text: 'Sentry', link: '/Sentry/' },
+					{ text: 'Redis', link: '/Redis/' },
 				] 
 			},
 			{ text: 'Github', link: 'https://github.com/Limsanity' },
