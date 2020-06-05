@@ -94,6 +94,13 @@ module.exports = {
 					children: getFiles('blog/Sentry')
 				}
 			],
+			'/Redis/': [
+				{
+					title: 'Redis',
+					collapsable: false,
+					children: getFiles('blog/Redis')
+				}
+			],
 			'/': [
 				{
 					title: '主页',
